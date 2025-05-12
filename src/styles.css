@@ -72,9 +72,26 @@ main {
     color: #333;
 }
 
+.stats-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    gap: 24px;
+}
+
+.count-label {
+    font-size: 2rem;
+    color: #222;
+    font-weight: 500;
+    margin-right: 8px;
+}
+
 #count {
     font-weight: bold;
     color: #007bff;
+    font-size: 2rem;
+    margin-right: 24px;
 }
 
 /* Error message styles */
@@ -103,4 +120,36 @@ main {
     header h1 {
         font-size: 2rem;
     }
+}
+
+#camera-enable, #camera-disable {
+    height: 60px;
+    min-width: 180px;
+    padding: 0 40px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(90deg, #007bff 0%, #339cff 100%);
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.10);
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 16px;
+}
+
+#camera-enable:hover, #camera-enable:focus,
+#camera-disable:hover, #camera-disable:focus {
+    background: linear-gradient(90deg, #339cff 0%, #007bff 100%);
+    box-shadow: 0 4px 16px rgba(0, 123, 255, 0.15);
+    transform: translateY(-2px) scale(1.04);
+}
+
+#camera-enable:active, #camera-disable:active {
+    background: #007bff;
+    transform: scale(0.97);
 } 
