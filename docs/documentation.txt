@@ -1,0 +1,61 @@
+Crowd Counting Web Application (Local Camera and Processing)
+Requirements Summary
+- Web app should access camera (phone/laptop)
+- Detect people in real-time
+- Display person count
+- All processing should run on your laptop, not the cloud
+Tech Stack
+- Frontend: HTML + JavaScript (or React)
+- Backend (Optional): Node.js
+- Computer Vision: TensorFlow.js
+- Model: Pre-trained person detection model like Coco-SSD
+Step-by-Step Development Plan
+1. Setup Basic Web App
+HTML:
+<video id="video" autoplay muted playsinline width="640" height="480"></video>
+<canvas id="canvas" width="640" height="480"></canvas>
+<p>People Count: <span id="count">0</span></p>
+JavaScript:
+navigator.mediaDevices.getUserMedia({ video: true })
+.then((stream) => {
+document.getElementById('video').srcObject = stream;
+})
+.catch((err) => {
+console.error("Camera error:", err);
+});
+2. Integrate TensorFlow.js with Coco-SSD
+Include scripts:
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+JavaScript:
+let model;
+cocoSsd.load().then((loadedModel) => {
+model = loadedModel;
+detectFrame();
+});
+function detectFrame() {
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const runDetection = async () => {
+const predictions = await model.detect(video);
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+let count = 0;
+predictions.forEach(pred => {
+if (pred.class === 'person') {
+count++;
+const [x, y, width, height] = pred.bbox;
+ctx.strokeStyle = 'red';
+ctx.lineWidth = 2;
+ctx.strokeRect(x, y, width, height);
+ctx.fillStyle = 'red';
+ctx.fillText(`${pred.class}`, x, y > 10 ? y - 5 : 10);
+}
+});
+document.getElementById('count').textContent = count;
+requestAnimationFrame(runDetection);
+};
+runDetection();
+}
+3. Run Locally
